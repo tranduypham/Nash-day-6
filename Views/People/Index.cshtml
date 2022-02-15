@@ -1,0 +1,57 @@
+@model IEnumerable<ASP.NET.mvc.crud.Models.PersonModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>This is the list of people</h1>
+
+<div class="">
+    <a asp-action="Add" class="btn btn-primary">Add</a>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Id)</th>
+            <th>@Html.DisplayNameFor(model => model.FirstName)</th>
+            <th>@Html.DisplayNameFor(model => model.LastName)</th>
+            <th>@Html.DisplayNameFor(model => model.Gender)</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var person in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelPerson => person.Id)</td>
+                <td>@Html.DisplayFor(modelPerson => person.LastName)</td>
+                <td>@Html.DisplayFor(modelPerson => person.FirstName)</td>
+                <td>@Html.DisplayFor(modelPerson => person.Gender)</td>
+                <td>
+                    <a asp-action="Delete" asp-route-id="@person.Id" class="btn btn-danger btn-del">Del</a>
+                    <a asp-action="Edit" asp-route-id="@person.Id" class="btn btn-warning">Edit</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script>
+        var delBtn = $(".btn-del");
+        delBtn.on('click',function(event){
+            event.preventDefault();
+            opt = confirm("Are you sure delete this item ?");
+            if(opt==true){
+                console.log($(this).attr("href"));
+                $.ajax({
+                    url: $(this).attr("href"),
+                    type: "POST"
+                }).done(function(){
+                    window.location.reload();
+                });
+            }
+        });
+    </script>
+}
